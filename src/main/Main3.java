@@ -21,8 +21,17 @@ public class Main3 {
                                     .uri(URI.create(url)).build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString()); 
             System.out.println(response.body());
+
+            //fiquei confuso pq repeteiu isso mas faz sentido
+            //primeiro ele gera a mensagem e ai da o erro, ai pra aplicacao n parar
+            //ele boa no catch, assim da o erro e continua funcionando.
+            if (response.statusCode() == 404){
+                throw new ErroConsultaGitHubException("Usuario inexistente.");
+            }
         }catch (IOException | InterruptedException e){
             System.out.println("Deu erro");
+        }catch (ErroConsultaGitHubException e){
+            System.out.println(e.getMessage());
         }
     }
 }
